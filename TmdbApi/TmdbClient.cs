@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using TmdbApi.Exceptions;
 
 namespace TmdbApi;
 
@@ -23,14 +24,23 @@ public class TmdbClient : ITmdbClient
 
     private async Task<TResult> GetAsync<TResult>(string query)
     {
-        var result = await _httpClient.GetAsync("");
-        if(!result.IsSuccessStatusCode)
-            throw new HttpRequestException(result.ReasonPhrase);
-        
-        TResult? content;
+        var result = await _httpClient.GetAsync(query);
+        var httpContent = result.Content;
+
+        if (!result.IsSuccessStatusCode)
+            await ParseAnswer<TmdbException>(httpContent);
+
+        var content = await ParseAnswer<TResult>(httpContent);
+
+        return content!;
+    }
+
+    private async Task<TResult?> ParseAnswer<TResult>(HttpContent content)
+    {
+        TResult? result;
         try
         {
-            content = await result.Content.ReadFromJsonAsync<TResult>();
+            result = await content.ReadFromJsonAsync<TResult>();
         }
         catch (Exception e)
         {
@@ -38,6 +48,6 @@ public class TmdbClient : ITmdbClient
             throw;
         }
         
-        return content!;
+        return result;   
     }
 }
