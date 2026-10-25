@@ -1,7 +1,10 @@
+using TmdbApi.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTmdbClient();
 
 var app = builder.Build();
 app.MapSwaggerUI();
