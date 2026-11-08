@@ -8,6 +8,6 @@ namespace TmdbApi;
 /// </summary>
 public interface ITmdbClient
 {
-    Task<GetRequestSearchDto<GetRequestMultiDto>> GetRequestSearchAsync(string name,
+    Task<GetRequestSearchDto<GetRequestMultiDto>> GetRequestMultiSearchAsync(string name,
         bool includeAdult = false, string language = "en-US", int page = 1);
 }
