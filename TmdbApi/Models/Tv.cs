@@ -1,9 +1,7 @@
-namespace TmdbApi.Models.Search.DTOs;
+﻿namespace TmdbApi.Models;
 
-public class GetRequestTvDto
+public class Tv
 {
-    //TODO: Сериализатор под это
-    public bool? Adult { get; set; }
     public string? BackdropPath { get; set; }
     public int[]? GenreIds { get; set; }
     public int Id { get; set; }

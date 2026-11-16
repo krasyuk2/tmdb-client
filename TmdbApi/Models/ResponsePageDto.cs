@@ -1,6 +1,6 @@
-namespace TmdbApi.Models.Search;
+﻿namespace TmdbApi.Models;
 
-public class GetRequestSearchDto<TypeDto>
+public class ResponsePageDto<TypeDto>
 {
     public int Page { get; set; }
     public TypeDto[]? Results { get; set; }

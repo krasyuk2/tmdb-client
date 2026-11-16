@@ -1,8 +1,7 @@
-namespace TmdbApi.Models.Search.DTOs;
+﻿namespace TmdbApi.Models;
 
-public class GetRequestMovieDto
+public class Movie
 {
-    public bool? Adult { get; set; }
     public string? BackgroundPath { get; set; }
     public int[]? GenreIds { get; set; }
     public int Id { get; set; }

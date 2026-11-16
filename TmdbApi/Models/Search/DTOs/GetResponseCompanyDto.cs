@@ -1,6 +1,6 @@
 namespace TmdbApi.Models.Search.DTOs;
 
-public class GetRequestCompanyDto
+public class GetResponseCompanyDto
 {
     public int Id { get; set; }
     public string? LogoPath { get; set; }

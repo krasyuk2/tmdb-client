@@ -1,6 +1,6 @@
 namespace TmdbApi.Models.Search.DTOs;
 
-public class GetRequestCollectionDto
+public class GetResponseCollectionDto
 {
     public bool? Adult { get; set; }
     public string? BackdropPath { get; set; }

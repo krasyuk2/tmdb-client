@@ -25,11 +25,11 @@ public class TmdbClient : ITmdbClient
         _httpClient = httpClient;
     }
 
-    public async Task<GetRequestSearchDto<GetRequestMultiDto>> GetRequestMultiSearchAsync(string name,
+    public async Task<GetResponseSearchDto<GetResponseMultiDto>> GetRequestMultiSearchAsync(string name,
         bool includeAdult = false, string language = "en-US", int page = 1)
     {
         string query = "https://api.themoviedb.org/3/search/multi?query=m&include_adult=false&language=en-US&page=1";
-        return await GetAsync<GetRequestSearchDto<GetRequestMultiDto>>(query);
+        return await GetAsync<GetResponseSearchDto<GetResponseMultiDto>>(query);
     }
 
     private async Task<TResult> GetAsync<TResult>(string query)

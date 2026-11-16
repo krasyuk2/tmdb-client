@@ -1,9 +1,8 @@
-namespace TmdbApi.Models.Search.DTOs;
+﻿namespace TmdbApi.Models;
 
-public class GetRequestMultiDto
+public class Multi
 {
-    public bool? Adult { get; set; }
-    public string? BackgroundPath { get; set; }
+    public string? BackdropPath { get; set; }
     public int Id { get; set; }
     public string? Title { get; set; }
     public string? OriginalLanguage { get; set; }
@@ -13,10 +12,12 @@ public class GetRequestMultiDto
     public string? MediaType { get; set; }
     public int[]? GenreIds { get; set; }
     public double? Popularity { get; set; }
-    public string? ReleaseDate { get; set; }
+    public DateTime? ReleaseDate { get; set; }
     public bool? Video { get; set; }
     public double? VoteAverage { get; set; }
     public double? VoteCount { get; set; }
     public string? Name { get; set; }
     public string? OriginalName { get; set; }
+    public DateTime? FirstAirDate { get; set; }
+    public string[]? OriginCountry { get; set; }
 }
