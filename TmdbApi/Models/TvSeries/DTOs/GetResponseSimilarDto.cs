@@ -1,6 +1,6 @@
 ﻿namespace TmdbApi.Models.TvSeries.DTOs;
 
-public class GetResponseSimilarDto
+public class GetResponseSimilarDto : Tv
 {
     
 }
