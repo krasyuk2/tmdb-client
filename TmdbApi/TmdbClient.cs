@@ -1,8 +1,6 @@
 using System.Net.Http.Json;
 using TmdbApi.Exceptions;
 using TmdbApi.JsonSettings;
-using TmdbApi.Models.Search;
-using TmdbApi.Models.Search.DTOs;
 
 namespace TmdbApi;
 
@@ -24,14 +22,7 @@ public class TmdbClient : ITmdbClient
     {
         _httpClient = httpClient;
     }
-
-    public async Task<GetResponseSearchDto<GetResponseMultiDto>> GetRequestMultiSearchAsync(string name,
-        bool includeAdult = false, string language = "en-US", int page = 1)
-    {
-        string query = "https://api.themoviedb.org/3/search/multi?query=m&include_adult=false&language=en-US&page=1";
-        return await GetAsync<GetResponseSearchDto<GetResponseMultiDto>>(query);
-    }
-
+    
     private async Task<TResult> GetAsync<TResult>(string query)
     {
         var result = await _httpClient.GetAsync(query);

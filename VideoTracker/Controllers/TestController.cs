@@ -13,11 +13,5 @@ public class TestController : ControllerBase
     {
         _tmdbClient = tmdbClient;
     }
-
-    [HttpGet]
-    public async Task<ActionResult> Get()
-    {
-        var result = await _tmdbClient.GetRequestMultiSearchAsync("");
-        return Ok(result);
-    }
+    
 }

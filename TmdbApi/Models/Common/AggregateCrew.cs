@@ -1,0 +1,16 @@
+namespace TmdbApi.Models.Common;
+
+public class AggregateCrew
+{
+    public bool? Adult { get; set; }
+    public int? Gender { get; set; }
+    public int Id { get; set; }
+    public string? KnownForDepartment { get; set; }
+    public string? Name { get; set; }
+    public string? OriginalName { get; set; }
+    public double? Popularity { get; set; }
+    public string? ProfilePath { get; set; }
+    public AggregateJob[]? Jobs { get; set; }
+    public string? Department { get; set; }
+    public int? TotalEpisodeCount { get; set; }
+}
