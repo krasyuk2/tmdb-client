@@ -1,6 +1,6 @@
 namespace TmdbApi.Models.TvSeasons.DTOs;
 
-public class GetResponseDetails
+public class GetResponseDetailsDto
 {
     public DateTime? AirDate { get; set; }
     public int? EpisodeNumber { get; set; }
