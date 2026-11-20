@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTmdbClient();
+builder.Services.AddTmdbClient(options => {});
 
 var app = builder.Build();
 app.MapSwaggerUI();

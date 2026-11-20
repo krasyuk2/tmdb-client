@@ -1,5 +1,7 @@
 using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using TmdbApi.Options;
 
 namespace TmdbApi.Extensions;
 
@@ -14,25 +16,21 @@ public static class TmdbServiceCollectionExtension
         /// <summary>
         /// Add HTTP client.
         /// </summary>
+        /// <param name="configure">Client configuration.</param>
         /// <returns><see cref="IServiceCollection"/></returns>
-        public IServiceCollection AddTmdbClient()
+        public IServiceCollection AddTmdbClient(Action<TmdbClientOptions> configure)
         {
-            serviceCollection.AddHttpClient<ITmdbClient, TmdbClient>(options =>
+            serviceCollection.AddOptions<TmdbClientOptions>()
+                .Configure(configure)
+                .Validate(o => !string.IsNullOrWhiteSpace(o.AccessToken), "Tmdb: AccessToken not found")
+                .ValidateOnStart();
+            
+            serviceCollection.AddHttpClient<ITmdbClient, TmdbClient>((sp, http) =>
             {
-                options.BaseAddress = new Uri("https://api.tmdb.ru");
-                options.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
+                var o = sp.GetRequiredService<IOptions<TmdbClientOptions>>().Value;
+                http.BaseAddress = new Uri(o.BaseUrl);
+                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", o.AccessToken);
             });
-            return serviceCollection;
-        }
-
-        /// <summary>
-        /// Add HTTP client.
-        /// </summary>
-        /// <param name="configureClient">Client configuration.</param>
-        /// <returns><see cref="IServiceCollection"/></returns>
-        public IServiceCollection AddTmdbClient(Action<HttpClient> configureClient)
-        {
-            serviceCollection.AddHttpClient<ITmdbClient, TmdbClient>(configureClient);
             return serviceCollection;
         } 
     }

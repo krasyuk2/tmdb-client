@@ -1,6 +1,13 @@
 using System.Net.Http.Json;
+using System.Text.Json;
+using Microsoft.Extensions.Options;
 using TmdbApi.Exceptions;
 using TmdbApi.JsonSettings;
+using TmdbApi.Models;
+using TmdbApi.Models.Account;
+using TmdbApi.Models.Common;
+using TmdbApi.Models.Enums;
+using TmdbApi.Options;
 
 namespace TmdbApi;
 
@@ -13,25 +20,43 @@ public class TmdbClient : ITmdbClient
     /// The HTTP client used to send requests to the TMDB API.
     /// </summary>
     private readonly HttpClient _httpClient;
+    private readonly TmdbClientOptions _options;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TmdbClient"/> class.
     /// </summary>
     /// <param name="httpClient">The HTTP client used to send requests to the TMDB API.</param>
-    public TmdbClient(HttpClient httpClient)
+    /// <param name="options">Settings tmdb client.</param>
+    public TmdbClient(HttpClient httpClient, IOptions<TmdbClientOptions> options)
     {
         _httpClient = httpClient;
+        _options = options.Value;
     }
-    
-    private async Task<TResult> GetAsync<TResult>(string query)
+
+    /// <inheritdoc/>
+    public Task<AccountDetails> GetAccountDetailsAsync(int accountId, CancellationToken cancellationToken = default) =>
+        GetAsync<AccountDetails>($"{_options.BaseUrl}account/{accountId}", cancellationToken);
+
+    /// <inheritdoc/>
+    public Task<PageResponse<MovieListItem>> GetAccountFavoriteMovies(int accountId, string sessionId,
+        string? language = null, int page = 1, SortByCreate? sortBy = null,
+        CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.GetAsync(query);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
+
+        return GetAsync<PageResponse<MovieListItem>>(
+            $"account/{accountId}/favorite/movies{query}", cancellationToken);
+    }
+
+    private async Task<TResult> GetAsync<TResult>(string query, CancellationToken cancellationToken)
+    {
+        var result = await _httpClient.GetAsync(query, cancellationToken);
         var httpContent = result.Content;
 
         if (!result.IsSuccessStatusCode)
-            throw await ParseAnswer<TmdbException>(httpContent) ?? new TmdbException("Lol") ;
+            throw await ParseAnswer<TmdbException>(httpContent) ?? throw new JsonException();
 
-        return await ParseAnswer<TResult>(httpContent) ?? throw new TmdbException("Lol");
+        return await ParseAnswer<TResult>(httpContent) ?? throw new JsonException();
     }
 
     private async Task<TResult?> ParseAnswer<TResult>(HttpContent content)
