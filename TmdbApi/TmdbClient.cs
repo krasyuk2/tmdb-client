@@ -35,7 +35,7 @@ public class TmdbClient : ITmdbClient
 
     /// <inheritdoc/>
     public Task<AccountDetails> GetAccountDetailsAsync(int accountId, CancellationToken cancellationToken = default) =>
-        GetAsync<AccountDetails>($"{_options.BaseUrl}account/{accountId}", cancellationToken);
+        GetAsync<AccountDetails>($"account/{accountId}", cancellationToken);
 
     /// <inheritdoc/>
     public Task<PageResponse<MovieListItem>> GetAccountFavoriteMovies(int accountId, string sessionId,
@@ -43,7 +43,7 @@ public class TmdbClient : ITmdbClient
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
-
+        
         return GetAsync<PageResponse<MovieListItem>>(
             $"account/{accountId}/favorite/movies{query}", cancellationToken);
     }
